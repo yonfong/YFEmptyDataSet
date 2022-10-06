@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 internal extension UIView  {
     
     //MARK: - Data Source Getters
@@ -187,28 +186,20 @@ internal extension UIView  {
         }
     }
 
-    fileprivate func swizzle(originalSelector: Selector, swizzledSelector: Selector) -> Bool {
-        guard responds(to: originalSelector) else { return false }
-
-        guard let originalMethod = class_getInstanceMethod(type(of: self), originalSelector),
-            let swizzledMethod = class_getInstanceMethod(type(of: self), swizzledSelector) else { return false }
-
-        let targetedMethod = class_addMethod(type(of: self), originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
-
-        if targetedMethod {
-            class_replaceMethod(type(of: self), swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
-            return true
+    fileprivate class func swizzleMethod(for aClass: AnyClass, originalSelector: Selector, swizzledSelector: Selector) -> Bool {
+        guard let originalMethod = class_getInstanceMethod(aClass, originalSelector), let swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector) else {
+            return false
+        }
+        
+        let didAddMethod = class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+        
+        if didAddMethod {
+            class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
         } else {
             method_exchangeImplementations(originalMethod, swizzledMethod)
-            return true
         }
-    }
-
-    // MARK: - Gestures
-
-    @objc private func didTapContentView(_ sender: UITapGestureRecognizer) {
-        guard let view = sender.view else { return }
-        emptyDataSetDelegate?.emptyDataSet(self, didTapView: view)
+        
+        return true
     }
     
     func isDataEmpty() -> Bool {
@@ -226,26 +217,8 @@ extension UITableView: EmptyDataSetProtocol {
 
     // MARK: - Swizzling
     func swizzleIfNeeded() {
-        guard let bool = didSwizzle, !bool else { return }
-
-        swizzle()
-    }
-    
-    func swizzle() -> Bool {
-        var swizzleRet = false
-
-        let newReloadDataSelector = #selector(reloadData_swizzled)
-        let originalReloadDataSelector = #selector(UITableView.reloadData)
-        didSwizzle = swizzle(originalSelector: originalReloadDataSelector, swizzledSelector: newReloadDataSelector)
-
-        let newEndUpdatesSelector = #selector(endUpdates_swizzled)
-        let originalEndUpdatesSelector = #selector(UITableView.endUpdates)
-        swizzleRet = swizzleRet &&
-            swizzle(originalSelector: originalEndUpdatesSelector, swizzledSelector: newEndUpdatesSelector)
-
-        didSwizzle = swizzleRet
-        
-        return swizzleRet
+        Self.swizzleReloadData
+        Self.swizzleEndUpdates
     }
 
     var isDataEmpty: Bool {
@@ -259,18 +232,39 @@ extension UITableView: EmptyDataSetProtocol {
         
         return true
     }
+    
+    // 解决多次调用交换方法
+    private static let swizzleReloadData: () = {
+        let tableViewOriginalSelector = #selector(UITableView.reloadData)
+        let tableViewSwizzledSelector = #selector(UITableView.reloadData_swizzled)
+        
+        let ret = swizzleMethod(for: UITableView.self, originalSelector: tableViewOriginalSelector, swizzledSelector: tableViewSwizzledSelector)
 
-    @objc func reloadData_swizzled() {
-        print("reloadData_swizzled")
+        if ret {
+            debugPrint("table_reloadData_swizzled")
+        }
+    }()
+    
+    private static let swizzleEndUpdates: () = {
+        let originalSelector = #selector(UITableView.endUpdates)
+        let swizzledSelector = #selector(UITableView.endUpdates_swizzled)
+        
+        let ret = swizzleMethod(for: UITableView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
+        
+        if ret {
+            debugPrint("endUpdates_swizzled")
+        }
+    }()
+    
 
+    //MARK: - Method Swizzling
+    @objc private func reloadData_swizzled() {
         // Calls the original implementation
         reloadData_swizzled()
         reloadEmptyDataSet()
     }
 
-    @objc func endUpdates_swizzled() {
-        print("endUpdates_swizzled")
-
+    @objc private func endUpdates_swizzled() {
         // Calls the original implementation
         endUpdates_swizzled()
         reloadEmptyDataSet()
@@ -283,25 +277,8 @@ extension UICollectionView: EmptyDataSetProtocol {
 
     // MARK: - Swizzling
     func swizzleIfNeeded() {
-        guard let bool = didSwizzle, !bool else { return }
-
-        swizzle()
-    }
-    
-    func swizzle() -> Bool {
-        var swizzleRet = false
-
-        let newReloadDataSelector = #selector(reloadData_swizzled)
-        let originalReloadDataSelector = #selector(UICollectionView.reloadData)
-        swizzleRet = swizzle(originalSelector: originalReloadDataSelector, swizzledSelector: newReloadDataSelector)
-
-        let newEndUpdatesSelector = #selector(performBatchUpdates_swizzled)
-        let originalEndUpdatesSelector = #selector(UICollectionView.performBatchUpdates(_:completion:))
-        swizzleRet = swizzleRet &&
-            swizzle(originalSelector: originalEndUpdatesSelector, swizzledSelector: newEndUpdatesSelector)
-
-        didSwizzle = swizzleRet
-        return swizzleRet
+        Self.swizzleReloadData
+        Self.swizzlePerformBatchUpdates
     }
 
     var isDataEmpty: Bool {
@@ -315,14 +292,36 @@ extension UICollectionView: EmptyDataSetProtocol {
         
         return true
     }
+    
+    private static let swizzleReloadData: () = {
+        let tableViewOriginalSelector = #selector(UICollectionView.reloadData)
+        let tableViewSwizzledSelector = #selector(UICollectionView.reloadData_swizzled)
+        
+        let ret = swizzleMethod(for: UITableView.self, originalSelector: tableViewOriginalSelector, swizzledSelector: tableViewSwizzledSelector)
 
-    @objc func reloadData_swizzled() {
+        if ret {
+            debugPrint("collection_reloadData_swizzled")
+        }
+    }()
+    
+    private static let swizzlePerformBatchUpdates: () = {
+        let originalSelector = #selector(UICollectionView.performBatchUpdates(_:completion:))
+        let swizzledSelector = #selector(UICollectionView.performBatchUpdates_swizzled)
+        
+        let ret = swizzleMethod(for: UITableView.self, originalSelector: originalSelector, swizzledSelector: swizzledSelector)
+
+        if ret {
+            debugPrint("swizzlePerformBatchUpdates")
+        }
+    }()
+
+    @objc private func reloadData_swizzled() {
         // Calls the original implementation
         reloadData_swizzled()
         reloadEmptyDataSet()
     }
 
-    @objc func performBatchUpdates_swizzled() {
+    @objc private func performBatchUpdates_swizzled() {
         // Calls the original implementation
         performBatchUpdates_swizzled()
         reloadEmptyDataSet()

@@ -25,7 +25,7 @@ class WeakReference: NSObject {
     }
 
     deinit {
-        print("WeakReference -deinit")
+        debugPrint("WeakReference -deinit")
         self.object = nil
     }
 }
@@ -51,10 +51,7 @@ public protocol EmptyDataSetInterface {
 
 protocol EmptyDataSetProtocol {
     var isDataEmpty: Bool { get }
-    
-    var needSwizzle: Bool { get }
-    var didSwizzle: Bool? { get set }
-    
+
     func swizzleIfNeeded()
 }
 
@@ -63,34 +60,8 @@ extension EmptyDataSetProtocol {
         return true
     }
     
-    var needSwizzle: Bool {
-        if self is UITableView {
-            return true
-        } else if self is UICollectionView {
-            return true
-        }
-        return false
-    }
-    
     func swizzleIfNeeded() {
         debugPrint("swizzleIfNeeded")
-    }
-}
-
-extension EmptyDataSetProtocol where Self: UIView {
-    var didSwizzle: Bool? {
-        get {
-            let reference = objc_getAssociatedObject(self, &AssociatedKeys.didSwizzle) as? WeakReference
-            let number = reference?.object as? NSNumber
-            return number?.boolValue ?? false // Returns false if the boolValue is nil.
-        }
-        set {
-            if let bool = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, WeakReference(with: NSNumber(value: bool)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            } else {
-                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
     }
 }
 
@@ -146,6 +117,7 @@ extension UIView: EmptyDataSetInterface {
                 invalidateEmptyDataSet()
             } else {
                 objc_setAssociatedObject(self, &AssociatedKeys.datasource, WeakReference(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                
                 (self as? EmptyDataSetProtocol)?.swizzleIfNeeded()
             }
         }

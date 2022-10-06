@@ -44,8 +44,7 @@ class OriginalUsageViewController: UITableViewController, EmptyDataSetSource, Em
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
         }
-        
-        tableView.reloadEmptyDataSet()
+    
         configureNavigationBar()
         configureStatusBar()
     }

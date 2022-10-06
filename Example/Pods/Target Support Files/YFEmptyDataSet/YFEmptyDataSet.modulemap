@@ -1,0 +1,6 @@
+framework module YFEmptyDataSet {
+  umbrella header "YFEmptyDataSet-umbrella.h"
+
+  export *
+  module * { export * }
+}

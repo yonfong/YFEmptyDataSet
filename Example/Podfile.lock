@@ -1,0 +1,23 @@
+PODS:
+  - SnapKit (5.6.0)
+  - YFEmptyDataSet (0.1.0):
+    - SnapKit (~> 5.6.0)
+
+DEPENDENCIES:
+  - YFEmptyDataSet (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  YFEmptyDataSet:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  YFEmptyDataSet: 9a0b75259c0dbf53fb9ec2aef552a4f872f5dd40
+
+PODFILE CHECKSUM: 677d1356ff68d80f816e9995c08286ad94f3e9ec
+
+COCOAPODS: 1.11.3

@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'YFEmptyDataSet_Example' do
+  pod 'YFEmptyDataSet', :path => '../'
+
+  target 'YFEmptyDataSet_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

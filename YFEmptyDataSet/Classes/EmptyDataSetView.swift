@@ -134,8 +134,8 @@ public class EmptyDataSetView: UIView {
     
     // MARK: - UIView Overrides
 
-    public override func didMoveToWindow() {
-        guard let superview = superview else { return }
+    public override func willMove(toWindow newWindow: UIWindow?) {
+        guard let superview = superview else { return  }
         
         // 解决父视图未获取争取的尺寸导致 emptyView 不显示
         if superview.frame.size.equalTo(.zero) {
@@ -144,20 +144,28 @@ public class EmptyDataSetView: UIView {
         
         frame = superview.bounds
 
-        
-        if fadeInOnDisplay {
-            UIView.animate(withDuration: 0.25) {
-                self.contentView.alpha = 1
+        if newWindow != nil {
+            if fadeInOnDisplay {
+                UIView.animate(withDuration: 0.25) {
+                    self.contentView.alpha = 1
+                }
+            } else {
+                contentView.alpha = 1
             }
         } else {
-            contentView.alpha = 1
+            if fadeInOnDisplay {
+                UIView.animate(withDuration: 0.25) {
+                    self.contentView.alpha = 0
+                }
+            } else {
+                contentView.alpha = 0
+            }
         }
     }
 
-    // MARK: - Layout
 
+    // MARK: - Layout
     func setupLayout() {
-        
         prepareForReuse()
 
         contentView.snp.remakeConstraints { make in

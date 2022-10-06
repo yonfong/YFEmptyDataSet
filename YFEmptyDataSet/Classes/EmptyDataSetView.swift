@@ -25,6 +25,11 @@ public class EmptyDataSetView: UIView {
     internal var didTapEmptyViewHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
     internal var didTapEmptyButtonHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
     
+    internal var willAppearHandle: (() -> Void)?
+    internal var didAppearHandle: (() -> Void)?
+    internal var willDisappearHandle: (() -> Void)?
+    internal var didDisappearHandle: (() -> Void)?
+    
     lazy var tapGesture: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer(target: self, action: #selector(emptyViewTaped))
         addGestureRecognizer(tap)

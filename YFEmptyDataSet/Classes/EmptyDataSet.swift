@@ -13,6 +13,7 @@ struct AssociatedKeys {
     static var datasource = "emptyDataSetSource"
     static var delegate = "emptyDataSetDelegate"
     static var emptyDataSetView = "emptyDataSetView"
+    static var configEmptyDataSetView = "configEmptyDataSetView"
 }
 
 class WeakReference: NSObject {
@@ -30,7 +31,6 @@ class WeakReference: NSObject {
 }
 
 public protocol EmptyDataSetInterface {
-
     /// The empty datasets delegate
     var emptyDataSetSource: EmptyDataSetSource? { get set }
 
@@ -46,6 +46,8 @@ public protocol EmptyDataSetInterface {
     func reloadEmptyDataSet()
     
     func invalidateEmptyDataSet()
+    
+    func configureEmptyDataSetView(_ closure: ((EmptyDataSetView) -> Void)?)
 }
 
 public protocol EmptyDataSetProtocol {
@@ -106,7 +108,26 @@ public extension UIView {
     }
 }
 
+extension EmptyDataSetInterface where Self: UIView {
+    var configureEmptyViewClousre: ((EmptyDataSetView) -> Void)? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.configEmptyDataSetView) as? (EmptyDataSetView) -> Void
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.configEmptyDataSetView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            
+            if newValue != nil {
+                (self as? EmptyDataSetProtocol)?.swizzleIfNeeded()
+            }
+        }
+    }
+}
+
 extension UIView: EmptyDataSetInterface {
+    public func configureEmptyDataSetView(_ closure: ((EmptyDataSetView) -> Void)?) {
+        configureEmptyViewClousre = closure
+    }
+    
     public var emptyDataSetSource: EmptyDataSetSource? {
         get {
             let reference = objc_getAssociatedObject(self, &AssociatedKeys.datasource) as? WeakReference
@@ -151,13 +172,7 @@ extension UIView: EmptyDataSetInterface {
     }
 
     public func invalidateEmptyDataSet() {
-        if associatedEmptyDataSetView != nil {
-            associatedEmptyDataSetView?.prepareForReuse()
-            associatedEmptyDataSetView?.removeFromSuperview()
-            associatedEmptyDataSetView = nil
-        }
-
-        (self as? UIScrollView)?.isScrollEnabled = true
+        invalidate()
     }
 }
 

@@ -20,6 +20,7 @@
 		256558233B40ACA6818F143BBC5B8017 /* ConstraintViewDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0072CC268C7456CC1DA6E8180975AB43 /* ConstraintViewDSL.swift */; };
 		2B8087A4DFDAA3A4B731E243B64302C8 /* Pods-YFEmptyDataSet_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 102C56094A3B3AB49202A0EEB02310AF /* Pods-YFEmptyDataSet_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		310AFFF3AA96FF848714ADC0F01819C9 /* EmptyDataSetSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF620BCCE3BFD7D4B29525441699DBDC /* EmptyDataSetSource.swift */; };
+		3330BC3028EF143000CEC100 /* EmptyDataSetView+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3330BC2F28EF143000CEC100 /* EmptyDataSetView+Config.swift */; };
 		3660B4F629053ABC3C1DF69366770289 /* ConstraintConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD101E65ADCCC341BCD3BFF777CA947C /* ConstraintConfig.swift */; };
 		38B9D58E94D9C1CECD7E381C64A2329D /* UILayoutSupport+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152EE8343B4F64CFDE73F65CEF14A13F /* UILayoutSupport+Extensions.swift */; };
 		3C9A0A54DE183341A9BBB63CD16D9C32 /* YFEmptyDataSet-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E965BDB0E3ED9E58BBEC14A4DEB970F3 /* YFEmptyDataSet-dummy.m */; };
@@ -104,19 +105,20 @@
 		0EDDE67E175E1DAC816136130DD313F0 /* EmptyDataSet.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmptyDataSet.swift; path = YFEmptyDataSet/Classes/EmptyDataSet.swift; sourceTree = "<group>"; };
 		0EE5F8CB92905AE76169A71226B44035 /* SnapKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.debug.xcconfig; sourceTree = "<group>"; };
 		102C56094A3B3AB49202A0EEB02310AF /* Pods-YFEmptyDataSet_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-YFEmptyDataSet_Example-umbrella.h"; sourceTree = "<group>"; };
-		13DF41A7A0BA62D360111EDE3D9A1B1C /* YFEmptyDataSet.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = YFEmptyDataSet.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		13DF41A7A0BA62D360111EDE3D9A1B1C /* YFEmptyDataSet.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = YFEmptyDataSet.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		143498449916D71708A8AF2F96E7320A /* SnapKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SnapKit-dummy.m"; sourceTree = "<group>"; };
 		152EE8343B4F64CFDE73F65CEF14A13F /* UILayoutSupport+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UILayoutSupport+Extensions.swift"; path = "Sources/UILayoutSupport+Extensions.swift"; sourceTree = "<group>"; };
 		1BECD601CA550A7F9B884B9143DDF13F /* YFEmptyDataSet-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "YFEmptyDataSet-prefix.pch"; sourceTree = "<group>"; };
 		26E5BB7E9F99F41E937A7E2CCEF178BE /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = Sources/ConstraintItem.swift; sourceTree = "<group>"; };
 		2FC9CBD9DCE5B5D7548CA5056E131501 /* YFEmptyDataSet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YFEmptyDataSet.release.xcconfig; sourceTree = "<group>"; };
+		3330BC2F28EF143000CEC100 /* EmptyDataSetView+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "EmptyDataSetView+Config.swift"; path = "YFEmptyDataSet/Classes/EmptyDataSetView+Config.swift"; sourceTree = "<group>"; };
 		38A6A462E0F0B040B83C8763773533FE /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Sources/LayoutConstraint.swift; sourceTree = "<group>"; };
 		3AF34962F54DAA8DEB0A1D7D4F3FC09A /* ConstraintRelatableTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelatableTarget.swift; path = Sources/ConstraintRelatableTarget.swift; sourceTree = "<group>"; };
 		3D9B0299087524A8D0A2F3EBEC4EF75C /* YFEmptyDataSet-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "YFEmptyDataSet-Info.plist"; sourceTree = "<group>"; };
-		3E2D50C7EE0F111F21A54163F175281B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		3E2D50C7EE0F111F21A54163F175281B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		412D51A2BEEF78C262C4B3F3798D1702 /* ConstraintMakerFinalizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerFinalizable.swift; path = Sources/ConstraintMakerFinalizable.swift; sourceTree = "<group>"; };
 		458867733779570F7398C76B46AEAF5E /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Sources/ConstraintView.swift; sourceTree = "<group>"; };
-		46CC16E23C8605345C43A94BD147B41B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		46CC16E23C8605345C43A94BD147B41B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4BA6A3E6F6F26F30D2632873229CA013 /* EmptyDataSetView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EmptyDataSetView.swift; path = YFEmptyDataSet/Classes/EmptyDataSetView.swift; sourceTree = "<group>"; };
 		4C8251A08ED8E6CF34420BBF858126F7 /* ConstraintMakerRelatable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerRelatable.swift; path = Sources/ConstraintMakerRelatable.swift; sourceTree = "<group>"; };
 		5032FD34D5BB9A1F925C649B43CC02DC /* ConstraintLayoutSupportDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupportDSL.swift; path = Sources/ConstraintLayoutSupportDSL.swift; sourceTree = "<group>"; };
@@ -140,7 +142,7 @@
 		96FC77E67CF92B1B376C0C627D8DFE7F /* Pods-YFEmptyDataSet_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-YFEmptyDataSet_Example-dummy.m"; sourceTree = "<group>"; };
 		979486118B3E90C08386079D57962701 /* SnapKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C470D9AAEF29F540020DCCF10FF20BA /* Pods-YFEmptyDataSet_Tests */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-YFEmptyDataSet_Tests"; path = Pods_YFEmptyDataSet_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F0A527ED8F0A719FF610D743A87DAD3 /* ConstraintMakerPrioritizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPrioritizable.swift; path = Sources/ConstraintMakerPrioritizable.swift; sourceTree = "<group>"; };
 		A22913DEA73839AAE387CD9356A2E424 /* Pods-YFEmptyDataSet_Example */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-YFEmptyDataSet_Example"; path = Pods_YFEmptyDataSet_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AD314F2A6E70D4CB927C01E32038F694 /* Pods-YFEmptyDataSet_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-YFEmptyDataSet_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				AF2C18DD3BDE5C946348E462A935A062 /* EmptyDataSetImpl.swift */,
 				DF620BCCE3BFD7D4B29525441699DBDC /* EmptyDataSetSource.swift */,
 				4BA6A3E6F6F26F30D2632873229CA013 /* EmptyDataSetView.swift */,
+				3330BC2F28EF143000CEC100 /* EmptyDataSetView+Config.swift */,
 				8EF1864C7835BAED7DB0EE32DB72D95A /* Pod */,
 				D68AE05A1CDE3746A614C74D0E62E395 /* Support Files */,
 			);
@@ -369,7 +372,6 @@
 				152EE8343B4F64CFDE73F65CEF14A13F /* UILayoutSupport+Extensions.swift */,
 				403EB05A3920652EED411213C52E3AC2 /* Support Files */,
 			);
-			name = SnapKit;
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
@@ -647,6 +649,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72BE573F73D0C72075636129970F8822 /* EmptyDataSet.swift in Sources */,
+				3330BC3028EF143000CEC100 /* EmptyDataSetView+Config.swift in Sources */,
 				C66EB037E1AEF1F6C6F653C53C6C1F1D /* EmptyDataSetDelegate.swift in Sources */,
 				EA06ACBCA40B17F56FEACF9F7AF83669 /* EmptyDataSetImpl.swift in Sources */,
 				310AFFF3AA96FF848714ADC0F01819C9 /* EmptyDataSetSource.swift in Sources */,
@@ -815,8 +818,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};

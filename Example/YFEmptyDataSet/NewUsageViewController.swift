@@ -42,33 +42,31 @@ class NewUsageViewController: UITableViewController {
             tableView.contentInsetAdjustmentBehavior = .never
         } 
         
-//        tableView.emptyDataSetView { [weak self] view in
-//            if let `self` = self {
-//                view.titleLabelString(self.config.titleString)
-//                    .detailLabelString(self.config.detailString)
-//                    .image(self.config.image)
-//                    .imageAnimation(self.config.imageAnimation)
-//                    .buttonTitle(self.config.buttonTitle(.normal), for: .normal)
-//                    .buttonTitle(self.config.buttonTitle(.highlighted), for: .highlighted)
-//                    .buttonBackgroundImage(self.config.buttonBackgroundImage(.normal), for: .normal)
-//                    .buttonBackgroundImage(self.config.buttonBackgroundImage(.highlighted), for: .highlighted)
-//                    .dataSetBackgroundColor(self.config.backgroundColor)
-//                    .verticalOffset(self.config.verticalOffset)
-//                    .verticalSpace(self.config.spaceHeight)
-//                    .shouldDisplay(true)
-//                    .shouldFadeIn(true)
-//                    .isTouchAllowed(true)
-//                    .isScrollAllowed(true)
-//                    .isImageViewAnimateAllowed(self.isLoading)
-//                    .didTapDataButton {
-//                        self.emptyDataSetDidTapButton()
-//                    }
-//                    .didTapContentView {
-//                        self.emptyDataSetDidTapView()
-//                    }
-//
-//            }
-//        }
+        tableView.configureEmptyDataSetView { [weak self] emptyView in
+            guard let self = self else { return  }
+            
+            emptyView.titleLabelString(self.config.titleString)
+                .descriptionString(self.config.detailString)
+                .image(self.config.image)
+                .imageAnimation(self.config.imageAnimation)
+                .buttonTitle(self.config.buttonTitle(.normal), for: .normal)
+                .buttonTitle(self.config.buttonTitle(.highlighted), for: .highlighted)
+                .buttonBackgroundImage(self.config.buttonBackgroundImage(.normal), for: .normal)
+                .buttonBackgroundImage(self.config.buttonBackgroundImage(.highlighted), for: .highlighted)
+                .dataSetBackgroundColor(self.config.backgroundColor)
+                .verticalOffset(self.config.verticalOffset)
+                .shouldDisplay(true)
+                .shouldFadeIn(true)
+                .isTouchAllowed(true)
+                .isScrollAllowed(true)
+                .isImageViewAnimateAllowed(self.isLoading)
+                .didTapDataButton { emptyDataSetView in
+                    self.emptyDataSetDidTapButton()
+                }
+                .didTapContentView { emptyDataSetView in
+                    self.emptyDataSetDidTapView()
+                }
+        }
         
         config.configureNavigationBar()
         config.configureStatusBar()

@@ -86,23 +86,29 @@ internal extension UIView  {
     
     private func emptyDataSetWillAppear() {
         emptyDataSetDelegate?.emptyDataSetWillAppear(self)
+        associatedEmptyDataSetView?.willAppearHandle?()
     }
     
     private func emptyDataSetDidAppear() {
         emptyDataSetDelegate?.emptyDataSetDidAppear(self)
+        associatedEmptyDataSetView?.didAppearHandle?()
     }
     
     private func emptyDataSetWillDisappear() {
         emptyDataSetDelegate?.emptyDataSetWillDisappear(self)
+        associatedEmptyDataSetView?.willDisappearHandle?()
     }
     
     private func emptyDataSetDidDisappear() {
         emptyDataSetDelegate?.emptyDataSetDidDisappear(self)
+        associatedEmptyDataSetView?.didDisappearHandle?()
     }
 
     // MARK: - Layout
-    func layoutEmptyDataSetIfNeeded() {
-        guard let emptyDataSetSource = emptyDataSetSource else { return }
+    func layoutEmptyDataSetIfNeeded() {        
+        guard (emptyDataSetSource != nil || configureEmptyViewClousre != nil) else {
+            return
+        }
         
         if (shouldDisplay && isDataEmpty()) || shouldBeForcedToDisplay {
             guard let view = self.emptyDataSetView else { return }
@@ -141,13 +147,14 @@ internal extension UIView  {
                 let buttonStates: [UIControl.State] = [.normal, .highlighted, .selected, .disabled]
                 
                 for state in buttonStates {
-                    let stateImage = emptyDataSetSource.buttonImage(forEmptyDataSet: self, for: state)
+                    
+                    let stateImage = buttonImage(for: state)
                     view.button.setImage(stateImage, for: state)
                     
-                    let buttonTitle = emptyDataSetSource.buttonTitle(forEmptyDataSet: self, for: state)
+                    let buttonTitle = buttonTitle(for: state)
                     view.button.setAttributedTitle(buttonTitle, for: state)
                     
-                    let stateBgImage = emptyDataSetSource.buttonBackgroundImage(forEmptyDataSet: self, for: state)
+                    let stateBgImage = buttonBackgroundImage(for: state)
                     view.button.setBackgroundImage(stateBgImage, for: state)
                 }
             }
@@ -163,11 +170,6 @@ internal extension UIView  {
             // Configure empty dataset userInteraction permission
             view.isUserInteractionEnabled = isTouchAllowed
             
-            view.setupLayout()
-            UIView.performWithoutAnimation {
-                view.layoutIfNeeded()
-            }
-            
             // Configure scroll permission
             (self as? UIScrollView)?.isScrollEnabled = isScrollAllowed
 
@@ -180,10 +182,30 @@ internal extension UIView  {
                 view.imageView.layer.removeAllAnimations()
             }
             
+            
+            configureEmptyViewClousre?(view)
+            
+            view.setupLayout()
+            UIView.performWithoutAnimation {
+                view.layoutIfNeeded()
+            }
+            
             emptyDataSetDidAppear()
         } else if isEmptyDataSetVisible {
             invalidateEmptyDataSet()
         }
+    }
+    
+    func invalidate() {
+        emptyDataSetWillDisappear()
+        if associatedEmptyDataSetView != nil {
+            associatedEmptyDataSetView?.prepareForReuse()
+            associatedEmptyDataSetView?.removeFromSuperview()
+            associatedEmptyDataSetView = nil
+        }
+
+        (self as? UIScrollView)?.isScrollEnabled = true
+        emptyDataSetDidDisappear()
     }
 
     fileprivate class func swizzleMethod(for aClass: AnyClass, originalSelector: Selector, swizzledSelector: Selector) -> Bool {

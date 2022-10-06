@@ -21,6 +21,15 @@ public class EmptyDataSetView: UIView {
     var fadeInOnDisplay = false
     var verticalSpacing: [EmptyDataSetElement: CGFloat]?
     var verticalOffset: CGFloat = 0
+    
+    internal var didTapEmptyViewHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
+    internal var didTapEmptyButtonHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
+    
+    lazy var tapGesture: UITapGestureRecognizer = {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(emptyViewTaped))
+        addGestureRecognizer(tap)
+        return tap
+    }()
 
     lazy var contentView: UIView = {
         let view = UIView()
@@ -56,6 +65,9 @@ public class EmptyDataSetView: UIView {
 
     lazy var button: UIButton = {
         let button = UIButton()
+        
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        
         return button
     }()
 
@@ -104,12 +116,16 @@ public class EmptyDataSetView: UIView {
         super.init(frame: frame)
         
         addSubview(contentView)
+        
+        tapGesture.isEnabled = true
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
         addSubview(contentView)
+        
+        tapGesture.isEnabled = true
     }
 
     deinit {
@@ -120,6 +136,12 @@ public class EmptyDataSetView: UIView {
 
     public override func didMoveToWindow() {
         guard let superview = superview else { return }
+        
+        // 解决父视图未获取争取的尺寸导致 emptyView 不显示
+        if superview.frame.size.equalTo(.zero) {
+            superview.layoutIfNeeded()
+        }
+        
         frame = superview.bounds
 
         
@@ -204,11 +226,11 @@ public class EmptyDataSetView: UIView {
 
     // MARK: - Gesture Handling
 
-    fileprivate func didTapView(sender: UIView) {
-        print("didTapView: \(sender)")
+    @objc fileprivate func emptyViewTaped() {
+        didTapEmptyViewHandle?(self)
     }
-
-    fileprivate func didTapButton(sender: UIButton) {
-        print("didTapButton: \(self)")
+    
+    @objc fileprivate func didTapButton() {
+        didTapEmptyButtonHandle?(self)
     }
 }

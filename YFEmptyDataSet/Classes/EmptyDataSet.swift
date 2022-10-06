@@ -102,6 +102,18 @@ public extension UIView {
             } else {
                 let view = EmptyDataSetView()
 
+                view.didTapEmptyButtonHandle = {[weak self] emptyView in
+                    guard let self = self else { return }
+                    
+                    self.emptyDataSetDelegate?.emptyDataSet(self, didTapButton: emptyView.button)
+                }
+                
+                view.didTapEmptyViewHandle = {[weak self] emptyView in
+                    guard let self = self else { return }
+                    
+                    self.emptyDataSetDelegate?.emptyDataSet(self, didTapView: emptyView)
+                }
+                
                 associatedEmptyDataSetView = view
                 return view
             }

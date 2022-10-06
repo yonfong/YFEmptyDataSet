@@ -53,9 +53,7 @@ class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDele
         testView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        testView.layoutIfNeeded()
-        
+
         testView.emptyDataSetSource = self
         testView.emptyDataSetDelegate = self
         testView.reloadEmptyDataSet()

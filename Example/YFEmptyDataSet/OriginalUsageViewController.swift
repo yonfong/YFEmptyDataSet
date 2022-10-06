@@ -15,8 +15,8 @@ class OriginalUsageViewController: UITableViewController, EmptyDataSetSource, Em
 
     var isLoading = false {
         didSet {
-            tableView.reloadEmptyDataSet()
             config.isLoading = isLoading
+            tableView.reloadEmptyDataSet()
         }
     }
     

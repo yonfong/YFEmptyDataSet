@@ -12,9 +12,8 @@ import SnapKit
 
 class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDelegate {
 
-    var tableView: UITableView!
-    var flag = true
-    
+    let testView = UIView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.lightGray
@@ -22,30 +21,7 @@ class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDele
         let navBarButtom = UIBarButtonItem(title: "Reload", style: .plain, target: self, action: #selector(reload))
         self.navigationItem.rightBarButtonItem = navBarButtom
         
-        let topHeight = UIApplication.shared.statusBarFrame.height + 44
-        tableView = UITableView(frame: CGRect(x: 0, y: topHeight, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - topHeight))
-//        tableView.delegate = self
-//        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-        self.view.addSubview(tableView)
-
-//        tableView.emptyDataSetSource = self
-//        tableView.emptyDataSetDelegate = self
-//        tableView.emptyDataSetView { [weak self] view in
-//            guard let `self` = self else { return }
-//            view.customView(CustomView(frame: CGRect(x: 0, y: 0, width: 100, height: 100)))
-//                .verticalOffset(50)
-//                .buttonImage(nil, for: .disabled)
-//        }
         
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
-        
-//        tableView.reloadEmptyDataSet()
-        
-        
-        let testView = UIView()
         view.addSubview(testView)
         testView.backgroundColor = .red
         
@@ -81,24 +57,7 @@ class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDele
     }
     
     @objc func reload() {
-        tableView.reloadData()
+        testView.reloadEmptyDataSet()
     }
 }
 
-extension TestViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 400
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "Hello World"
-        
-        return cell
-    }
-}

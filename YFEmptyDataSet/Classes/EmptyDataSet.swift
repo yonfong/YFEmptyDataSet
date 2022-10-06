@@ -13,7 +13,6 @@ struct AssociatedKeys {
     static var datasource = "emptyDataSetSource"
     static var delegate = "emptyDataSetDelegate"
     static var emptyDataSetView = "emptyDataSetView"
-    static var didSwizzle = "didSwizzle"
 }
 
 class WeakReference: NSObject {
@@ -49,7 +48,7 @@ public protocol EmptyDataSetInterface {
     func invalidateEmptyDataSet()
 }
 
-protocol EmptyDataSetProtocol {
+public protocol EmptyDataSetProtocol {
     var isDataEmpty: Bool { get }
 
     func swizzleIfNeeded()
@@ -72,6 +71,8 @@ public extension UIView {
                 return emptyView
             } else {
                 let view = EmptyDataSetView()
+                view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                view.isHidden = true
 
                 view.didTapEmptyButtonHandle = {[weak self] emptyView in
                     guard let self = self else { return }

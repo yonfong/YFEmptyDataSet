@@ -14,8 +14,8 @@ class NewUsageViewController: UITableViewController {
     
     var isLoading = false {
         didSet {
-            tableView.reloadEmptyDataSet()
             config.isLoading = isLoading
+            tableView.reloadEmptyDataSet()
         }
     }
     

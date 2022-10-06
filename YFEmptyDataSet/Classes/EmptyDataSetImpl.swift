@@ -216,12 +216,12 @@ internal extension UIView  {
 extension UITableView: EmptyDataSetProtocol {
 
     // MARK: - Swizzling
-    func swizzleIfNeeded() {
+    public func swizzleIfNeeded() {
         Self.swizzleReloadData
         Self.swizzleEndUpdates
     }
 
-    var isDataEmpty: Bool {
+    public var isDataEmpty: Bool {
         let sections = dataSource?.numberOfSections?(in: self) ?? 1
 
         for i in 0..<sections {
@@ -276,12 +276,12 @@ extension UITableView: EmptyDataSetProtocol {
 extension UICollectionView: EmptyDataSetProtocol {
 
     // MARK: - Swizzling
-    func swizzleIfNeeded() {
+    public func swizzleIfNeeded() {
         Self.swizzleReloadData
         Self.swizzlePerformBatchUpdates
     }
 
-    var isDataEmpty: Bool {
+    public var isDataEmpty: Bool {
         let sections = dataSource?.numberOfSections?(in: self) ?? 1
 
         for i in 0..<sections {

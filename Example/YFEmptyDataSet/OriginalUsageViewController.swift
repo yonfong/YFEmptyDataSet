@@ -73,67 +73,67 @@ class OriginalUsageViewController: UITableViewController, EmptyDataSetSource, Em
     }
     
     //MARK: - DZNEmptyDataSetSource
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func title(forEmptyDataSet containerView: UIView) -> NSAttributedString? {
         return config.titleString
     }
     
-    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func description(forEmptyDataSet containerView: UIView) -> NSAttributedString? {
         return config.detailString
     }
     
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    func image(forEmptyDataSet containerView: UIView) -> UIImage? {
         return config.image
     }
     
-    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+    func imageAnimation(forEmptyDataSet containerView: UIView) -> CAAnimation? {
         return config.imageAnimation
     }
     
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+    func buttonTitle(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> NSAttributedString? {
         return config.buttonTitle(state)
     }
  
-    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+    func buttonBackgroundImage(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> UIImage? {
         return config.buttonBackgroundImage(state)
     }
     
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    func backgroundColor(forEmptyDataSet containerView: UIView) -> UIColor? {
        return config.backgroundColor
     }
     
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+    func verticalOffset(forEmptyDataSet containerView: UIView) -> CGFloat {
         return config.verticalOffset
     }
     
-    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+    func spaceHeight(forEmptyDataSet containerView: UIView) -> CGFloat {
        return config.spaceHeight
     }
     
     //MARK: - DZNEmptyDataSetDelegate Methods
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldDisplay(_ containerView: UIView) -> Bool {
         return true
     }
     
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAllowTouch(_ containerView: UIView) -> Bool {
         return true
     }
     
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAllowScroll(_ containerView: UIView) -> Bool {
         return true
     }
     
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAnimateImageView(_ containerView: UIView) -> Bool {
         return isLoading
     }
     
-    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+    func emptyDataSet(_ containerView: UIView, didTapView view: UIView) {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             self.isLoading = false
         }
     }
     
-    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+    func emptyDataSet(_ scrollView: UIView, didTapButton button: UIButton) {
         isLoading = true
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             self.isLoading = false

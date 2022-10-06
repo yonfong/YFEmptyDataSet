@@ -12,103 +12,103 @@ import UIKit
 public protocol EmptyDataSetSource: AnyObject {
 
     /// Default is nil.
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString?
+    func title(forEmptyDataSet containerView: UIView) -> NSAttributedString?
 
     /// Default is nil.
-    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString?
+    func description(forEmptyDataSet containerView: UIView) -> NSAttributedString?
 
     /// Default is nil.
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage?
+    func image(forEmptyDataSet containerView: UIView) -> UIImage?
 
     /// Default is nil.
-    func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor?
+    func imageTintColor(forEmptyDataSet containerView: UIView) -> UIColor?
     
     /// Asks the data source for the image animation of the dataset.
     ///
     /// - Parameter scrollView: A scrollView subclass object informing the delegate.
     /// - Returns: image animation
-    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation?
+    func imageAnimation(forEmptyDataSet containerView: UIView) -> CAAnimation?
 
     /// Default is nil.
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString?
+    func buttonTitle(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> NSAttributedString?
 
     /// Default is nil.
-    func buttonImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage?
+    func buttonImage(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> UIImage?
 
     /// Default is nil.
-    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage?
+    func buttonBackgroundImage(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> UIImage?
 
     /// Default is nil.
-    func button(forEmptyDataSet scrollView: UIScrollView) -> UIButton?
+    func button(forEmptyDataSet containerView: UIView) -> UIButton?
 
     /// Default is nil.
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor?
+    func backgroundColor(forEmptyDataSet containerView: UIView) -> UIColor?
     
     /// Default is nil.
-    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView?
+    func customView(forEmptyDataSet containerView: UIView) -> UIView?
     
     /// Asks the data source for a offset for vertical alignment of the content. Default is 0.
     ///
     /// - Parameter scrollView: A scrollView subclass object informing the delegate.
     /// - Returns: The offset for vertical alignment.
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat
+    func verticalOffset(forEmptyDataSet containerView: UIView) -> CGFloat
     
     /// Default is EmptyDataSetDefaultSpacing.
-    func spacing(forEmptyDataSet scrollView: UIScrollView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat?
+    func spacing(forEmptyDataSet containerView: UIView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat?
 }
 
 /// EmptyDataSetSource default implementation so all methods are optional
 public extension EmptyDataSetSource {
 
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func title(forEmptyDataSet containerView: UIView) -> NSAttributedString? {
         return nil
     }
 
-    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+    func description(forEmptyDataSet containerView: UIView) -> NSAttributedString? {
         return nil
     }
 
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+    func image(forEmptyDataSet containerView: UIView) -> UIImage? {
         return nil
     }
 
-    func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    func imageTintColor(forEmptyDataSet containerView: UIView) -> UIColor? {
         return nil
     }
 
-    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+    func imageAnimation(forEmptyDataSet containerView: UIView) -> CAAnimation? {
         return nil
     }
     
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+    func buttonTitle(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> NSAttributedString? {
         return nil
     }
 
-    func buttonImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+    func buttonImage(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> UIImage? {
         return nil
     }
 
-    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+    func buttonBackgroundImage(forEmptyDataSet containerView: UIView, for state: UIControl.State) -> UIImage? {
         return nil
     }
 
-    func button(forEmptyDataSet scrollView: UIScrollView) -> UIButton? {
+    func button(forEmptyDataSet containerView: UIView) -> UIButton? {
         return nil
     }
 
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+    func backgroundColor(forEmptyDataSet containerView: UIView) -> UIColor? {
         return nil
     }
     
-    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? {
+    func customView(forEmptyDataSet containerView: UIView) -> UIView? {
         return nil
     }
     
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+    func verticalOffset(forEmptyDataSet containerView: UIView) -> CGFloat {
         return 0
     }
 
-    func spacing(forEmptyDataSet scrollView: UIScrollView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat? {
+    func spacing(forEmptyDataSet containerView: UIView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat? {
         return EmptyDataSetDefaultSpacing
     }
 }

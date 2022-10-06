@@ -14,7 +14,7 @@ public enum EmptyDataSetElement: CaseIterable {
 
 let EmptyDataSetDefaultSpacing: CGFloat = 10
 
-internal class EmptyDataSetView: UIView {
+public class EmptyDataSetView: UIView {
 
     // MARK: - Internal
 
@@ -118,10 +118,11 @@ internal class EmptyDataSetView: UIView {
     
     // MARK: - UIView Overrides
 
-    override func didMoveToWindow() {
+    public override func didMoveToWindow() {
         guard let superview = superview else { return }
         frame = superview.bounds
 
+        
         if fadeInOnDisplay {
             UIView.animate(withDuration: 0.25) {
                 self.contentView.alpha = 1
@@ -140,6 +141,7 @@ internal class EmptyDataSetView: UIView {
         contentView.snp.remakeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(verticalOffset)
+            make.leading.greaterThanOrEqualTo(0)
         }
         
         if let customView = customView {

@@ -12,102 +12,102 @@ import UIKit
 public protocol EmptyDataSetDelegate: AnyObject {
 
     /// Default is true.
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldDisplay(_ containerView: UIView) -> Bool
 
     /// Default is false.
-    func emptyDataSetShouldForceToDisplay(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldForceToDisplay(_ containerView: UIView) -> Bool
 
     /// Default is true.
-    func emptyDataSetShouldFadeIn(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldFadeIn(_ containerView: UIView) -> Bool
 
     /// Default is true.
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldAllowScroll(_ containerView: UIView) -> Bool
 
     /// Default is true.
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldAllowTouch(_ containerView: UIView) -> Bool
     
     /// Asks the delegate for image view animation permission. Default is false.
     /// Make sure to return a valid CAAnimation object from imageAnimationForEmptyDataSet:
     ///
     /// - Parameter scrollView: A scrollView subclass object informing the delegate.
     /// - Returns: true if the empty dataset is allowed to animate
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool
+    func emptyDataSetShouldAnimateImageView(_ containerView: UIView) -> Bool
 
     ///
-    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView)
+    func emptyDataSet(_ containerView: UIView, didTapView view: UIView)
 
     ///
-    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton)
+    func emptyDataSet(_ containerView: UIView, didTapButton button: UIButton)
     
     /// Tells the delegate that the empty data set will appear.
     ///
     /// - Parameter scrollView: A scrollView subclass informing the delegate.
-    func emptyDataSetWillAppear(_ scrollView: UIScrollView)
+    func emptyDataSetWillAppear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set did appear.
     ///
     /// - Parameter scrollView: A scrollView subclass informing the delegate.
-    func emptyDataSetDidAppear(_ scrollView: UIScrollView)
+    func emptyDataSetDidAppear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set will disappear.
     ///
     /// - Parameter scrollView: A scrollView subclass informing the delegate.
-    func emptyDataSetWillDisappear(_ scrollView: UIScrollView)
+    func emptyDataSetWillDisappear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set did disappear.
     ///
     /// - Parameter scrollView: A scrollView subclass informing the delegate.
-    func emptyDataSetDidDisappear(_ scrollView: UIScrollView)
+    func emptyDataSetDidDisappear(_ containerView: UIView)
 }
 
 /// EmptyDataSetDelegate default implementation so all methods are optional
 public extension EmptyDataSetDelegate {
 
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldDisplay(_ containerView: UIView) -> Bool {
         return true
     }
 
-    func emptyDataSetShouldForceToDisplay(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldForceToDisplay(_ containerView: UIView) -> Bool {
         return false
     }
 
-    func emptyDataSetShouldFadeIn(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldFadeIn(_ containerView: UIView) -> Bool {
         return true
     }
 
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAllowScroll(_ containerView: UIView) -> Bool {
         return false
     }
 
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAllowTouch(_ containerView: UIView) -> Bool {
         return true
     }
 
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+    func emptyDataSetShouldAnimateImageView(_ containerView: UIView) -> Bool {
         return true
     }
     
-    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+    func emptyDataSet(_ containerView: UIView, didTapView view: UIView) {
         // do nothing
     }
 
-    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+    func emptyDataSet(_ containerView: UIView, didTapButton button: UIButton) {
         // do nothing
     }
     
-    func emptyDataSetWillAppear(_ scrollView: UIScrollView) {
+    func emptyDataSetWillAppear(_ containerView: UIView) {
         
     }
     
-    func emptyDataSetDidAppear(_ scrollView: UIScrollView) {
+    func emptyDataSetDidAppear(_ containerView: UIView) {
         
     }
     
-    func emptyDataSetWillDisappear(_ scrollView: UIScrollView) {
+    func emptyDataSetWillDisappear(_ containerView: UIView) {
         
     }
     
-    func emptyDataSetDidDisappear(_ scrollView: UIScrollView) {
+    func emptyDataSetDidDisappear(_ containerView: UIView) {
         
     }
 }

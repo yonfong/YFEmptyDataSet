@@ -7,6 +7,29 @@
 
 import UIKit
 
+// MARK: - Swizzling Associated Keys
+
+struct AssociatedKeys {
+    static var datasource = "emptyDataSetSource"
+    static var delegate = "emptyDataSetDelegate"
+    static var emptyDataSetView = "emptyDataSetView"
+    static var didSwizzle = "didSwizzle"
+}
+
+class WeakReference: NSObject {
+    weak var object: AnyObject?
+
+    init(with object: Any?) {
+        super.init()
+        self.object = object as AnyObject?
+    }
+
+    deinit {
+        print("WeakReference -deinit")
+        self.object = nil
+    }
+}
+
 public protocol EmptyDataSetInterface {
 
     /// The empty datasets delegate
@@ -22,22 +45,116 @@ public protocol EmptyDataSetInterface {
     /// Call this method to force all the data to refresh. Calling reloadData() is similar, but this method only refreshes the empty dataset,
     /// instead of all the delegate/datasource calls from your table view or collection view.
     func reloadEmptyDataSet()
+    
+    func invalidateEmptyDataSet()
 }
 
-extension UIScrollView: EmptyDataSetInterface {
+protocol EmptyDataSetProtocol {
+    var isDataEmpty: Bool { get }
+    
+    var needSwizzle: Bool { get }
+    var didSwizzle: Bool? { get set }
+    
+    func swizzleIfNeeded()
+}
 
-    public weak var emptyDataSetSource: EmptyDataSetSource? {
-        get { return getEmptyDataSetSource() }
-        set { setEmptyDataSetSource(newValue) }
+extension EmptyDataSetProtocol {
+    var isDataEmpty: Bool {
+        return true
+    }
+    
+    var needSwizzle: Bool {
+        if self is UITableView {
+            return true
+        } else if self is UICollectionView {
+            return true
+        }
+        return false
+    }
+    
+    func swizzleIfNeeded() {
+        debugPrint("swizzleIfNeeded")
+    }
+}
+
+extension EmptyDataSetProtocol where Self: UIView {
+    var didSwizzle: Bool? {
+        get {
+            let reference = objc_getAssociatedObject(self, &AssociatedKeys.didSwizzle) as? WeakReference
+            let number = reference?.object as? NSNumber
+            return number?.boolValue ?? false // Returns false if the boolValue is nil.
+        }
+        set {
+            if let bool = newValue {
+                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, WeakReference(with: NSNumber(value: bool)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            } else {
+                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+}
+
+public extension UIView {
+    weak var emptyDataSetView: EmptyDataSetView? {
+        get {
+            if let emptyView = associatedEmptyDataSetView {
+                return emptyView
+            } else {
+                let view = EmptyDataSetView()
+
+                associatedEmptyDataSetView = view
+                return view
+            }
+        }
+        set {
+            associatedEmptyDataSetView = newValue
+        }
+    }
+    
+    weak var associatedEmptyDataSetView: EmptyDataSetView? {
+        get {
+            let reference = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetView) as? WeakReference
+            return reference?.object as? EmptyDataSetView
+        }
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetView, WeakReference(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+    }
+}
+
+extension UIView: EmptyDataSetInterface {
+    public var emptyDataSetSource: EmptyDataSetSource? {
+        get {
+            let reference = objc_getAssociatedObject(self, &AssociatedKeys.datasource) as? WeakReference
+            return reference?.object as? EmptyDataSetSource
+        }
+        set {
+            if newValue == nil {
+                objc_setAssociatedObject(self, &AssociatedKeys.datasource, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                invalidateEmptyDataSet()
+            } else {
+                objc_setAssociatedObject(self, &AssociatedKeys.datasource, WeakReference(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                (self as? EmptyDataSetProtocol)?.swizzleIfNeeded()
+            }
+        }
     }
 
-    public weak var emptyDataSetDelegate: EmptyDataSetDelegate? {
-        get { return getEmptyDataSetDelegate() }
-        set { setEmptyDataSetDelegate(newValue) }
+    public var emptyDataSetDelegate: EmptyDataSetDelegate? {
+        get {
+            let reference = objc_getAssociatedObject(self, &AssociatedKeys.delegate) as? WeakReference
+            return reference?.object as? EmptyDataSetDelegate
+        }
+        set {
+            if newValue == nil {
+                objc_setAssociatedObject(self, &AssociatedKeys.delegate, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            } else {
+                objc_setAssociatedObject(self, &AssociatedKeys.delegate, WeakReference(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
     }
 
     public var isEmptyDataSetVisible: Bool {
-        if let reference = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetView) as? WeakReference, let emptyView = reference.object as? EmptyDataSetView {
+        if let emptyView = associatedEmptyDataSetView {
             return emptyView.isHidden
         }
 
@@ -47,5 +164,17 @@ extension UIScrollView: EmptyDataSetInterface {
     public func reloadEmptyDataSet() {
         layoutEmptyDataSetIfNeeded()
     }
+
+    public func invalidateEmptyDataSet() {
+        if associatedEmptyDataSetView != nil {
+            associatedEmptyDataSetView?.prepareForReuse()
+            associatedEmptyDataSetView?.removeFromSuperview()
+            associatedEmptyDataSetView = nil
+        }
+
+        (self as? UIScrollView)?.isScrollEnabled = true
+    }
 }
+
+
 

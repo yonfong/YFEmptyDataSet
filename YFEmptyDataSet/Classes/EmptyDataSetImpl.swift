@@ -7,42 +7,8 @@
 
 import UIKit
 
-protocol EmptyDataSetProtocol {
-    func swizzle() -> Bool
-    func isEmpty() -> Bool
-}
 
-internal extension UIScrollView  {
-
-    // MARK: - Setter / Getter
-
-    func getEmptyDataSetSource() -> EmptyDataSetSource? {
-        let reference = objc_getAssociatedObject(self, &AssociatedKeys.datasource) as? WeakReference
-        return reference?.object as? EmptyDataSetSource
-    }
-
-    func setEmptyDataSetSource(_ datasource: EmptyDataSetSource?) {
-        if datasource == nil {
-            objc_setAssociatedObject(self, &AssociatedKeys.datasource, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            invalidate()
-        } else {
-            objc_setAssociatedObject(self, &AssociatedKeys.datasource, WeakReference(with: datasource), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            swizzleIfNeeded()
-        }
-    }
-
-    func getEmptyDataSetDelegate() -> EmptyDataSetDelegate? {
-        let reference = objc_getAssociatedObject(self, &AssociatedKeys.delegate) as? WeakReference
-        return reference?.object as? EmptyDataSetDelegate
-    }
-
-    func setEmptyDataSetDelegate(_ delegate: Any?) {
-        if delegate == nil {
-            objc_setAssociatedObject(self, &AssociatedKeys.delegate, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        } else {
-            objc_setAssociatedObject(self, &AssociatedKeys.delegate, WeakReference(with: delegate), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
+internal extension UIView  {
     
     //MARK: - Data Source Getters
     private var titleLabelString: NSAttributedString? {
@@ -89,8 +55,8 @@ internal extension UIScrollView  {
         return emptyDataSetSource?.verticalOffset(forEmptyDataSet: self) ?? 0.0
     }
     
-    private func spacing(forEmptyDataSet scrollView: UIScrollView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat? {
-        return emptyDataSetSource?.spacing(forEmptyDataSet: scrollView, after: emptyDataSetElement) ?? EmptyDataSetDefaultSpacing
+    private func spacing(forEmptyDataSet containerView: UIView, after emptyDataSetElement: EmptyDataSetElement) -> CGFloat? {
+        return emptyDataSetSource?.spacing(forEmptyDataSet: containerView, after: emptyDataSetElement) ?? EmptyDataSetDefaultSpacing
     }
     
     //MARK: - Delegate Getters & Events (Private)
@@ -204,7 +170,7 @@ internal extension UIScrollView  {
             }
             
             // Configure scroll permission
-            self.isScrollEnabled = isScrollAllowed
+            (self as? UIScrollView)?.isScrollEnabled = isScrollAllowed
 
             // Configure image view animation
             if self.isImageViewAnimateAllowed {
@@ -217,53 +183,7 @@ internal extension UIScrollView  {
             
             emptyDataSetDidAppear()
         } else if isEmptyDataSetVisible {
-            invalidate()
-        }
-    }
-
-    weak var emptyDataSetView: EmptyDataSetView? {
-        get {
-            if let reference = objc_getAssociatedObject(self, &AssociatedKeys.emptyDataSetView) as? WeakReference {
-                return reference.object as? EmptyDataSetView
-            } else {
-                let view = EmptyDataSetView()
-
-                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapContentView(_:)))
-                view.addGestureRecognizer(tapGesture)
-
-                objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetView, WeakReference(with: view), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-                return view
-            }
-        }
-        set {
-            objc_setAssociatedObject(self, &AssociatedKeys.emptyDataSetView, WeakReference(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-        }
-    }
-
-    // MARK: - Swizzling
-
-    var didSwizzle: Bool? {
-        get {
-            let reference = objc_getAssociatedObject(self, &AssociatedKeys.didSwizzle) as? WeakReference
-            let number = reference?.object as? NSNumber
-            return number?.boolValue ?? false // Returns false if the boolValue is nil.
-        }
-        set {
-            if let bool = newValue {
-                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, WeakReference(with: NSNumber(value: bool)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            } else {
-                objc_setAssociatedObject(self, &AssociatedKeys.didSwizzle, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
-    }
-
-    func swizzleIfNeeded() {
-        guard let bool = didSwizzle, !bool else { return }
-
-        if let proxy = self as? EmptyDataSetProtocol {
-            didSwizzle = proxy.swizzle()
-        } else {
-            print("\(type(of: self)) should conform to protocol EmptyDataset")
+            invalidateEmptyDataSet()
         }
     }
 
@@ -284,19 +204,6 @@ internal extension UIScrollView  {
         }
     }
 
-    // MARK: - Invalidation
-
-    func invalidate() {
-        if let view = emptyDataSetView {
-            view.prepareForReuse()
-            view.removeFromSuperview()
-            view.isHidden = true
-            emptyDataSetView = nil
-        }
-        
-        isScrollEnabled = true
-    }
-
     // MARK: - Gestures
 
     @objc private func didTapContentView(_ sender: UITapGestureRecognizer) {
@@ -306,7 +213,7 @@ internal extension UIScrollView  {
     
     func isDataEmpty() -> Bool {
         if let proxy = self as? EmptyDataSetProtocol {
-            return proxy.isEmpty()
+            return proxy.isDataEmpty
         } else {
             return true
         }
@@ -317,8 +224,15 @@ internal extension UIScrollView  {
 
 extension UITableView: EmptyDataSetProtocol {
 
+    // MARK: - Swizzling
+    func swizzleIfNeeded() {
+        guard let bool = didSwizzle, !bool else { return }
+
+        swizzle()
+    }
+    
     func swizzle() -> Bool {
-        var didSwizzle = false
+        var swizzleRet = false
 
         let newReloadDataSelector = #selector(reloadData_swizzled)
         let originalReloadDataSelector = #selector(UITableView.reloadData)
@@ -326,13 +240,15 @@ extension UITableView: EmptyDataSetProtocol {
 
         let newEndUpdatesSelector = #selector(endUpdates_swizzled)
         let originalEndUpdatesSelector = #selector(UITableView.endUpdates)
-        didSwizzle = didSwizzle &&
+        swizzleRet = swizzleRet &&
             swizzle(originalSelector: originalEndUpdatesSelector, swizzledSelector: newEndUpdatesSelector)
 
-        return didSwizzle
+        didSwizzle = swizzleRet
+        
+        return swizzleRet
     }
 
-    func isEmpty() -> Bool {
+    var isDataEmpty: Bool {
         let sections = dataSource?.numberOfSections?(in: self) ?? 1
 
         for i in 0..<sections {
@@ -365,22 +281,30 @@ extension UITableView: EmptyDataSetProtocol {
 
 extension UICollectionView: EmptyDataSetProtocol {
 
+    // MARK: - Swizzling
+    func swizzleIfNeeded() {
+        guard let bool = didSwizzle, !bool else { return }
+
+        swizzle()
+    }
+    
     func swizzle() -> Bool {
-        var didSwizzle = false
+        var swizzleRet = false
 
         let newReloadDataSelector = #selector(reloadData_swizzled)
         let originalReloadDataSelector = #selector(UICollectionView.reloadData)
-        didSwizzle = swizzle(originalSelector: originalReloadDataSelector, swizzledSelector: newReloadDataSelector)
+        swizzleRet = swizzle(originalSelector: originalReloadDataSelector, swizzledSelector: newReloadDataSelector)
 
         let newEndUpdatesSelector = #selector(performBatchUpdates_swizzled)
         let originalEndUpdatesSelector = #selector(UICollectionView.performBatchUpdates(_:completion:))
-        didSwizzle = didSwizzle &&
+        swizzleRet = swizzleRet &&
             swizzle(originalSelector: originalEndUpdatesSelector, swizzledSelector: newEndUpdatesSelector)
 
-        return didSwizzle
+        didSwizzle = swizzleRet
+        return swizzleRet
     }
 
-    func isEmpty() -> Bool {
+    var isDataEmpty: Bool {
         let sections = dataSource?.numberOfSections?(in: self) ?? 1
 
         for i in 0..<sections {
@@ -405,25 +329,4 @@ extension UICollectionView: EmptyDataSetProtocol {
     }
 }
 
-// MARK: - Swizzling Associated Keys
 
-struct AssociatedKeys {
-    static var datasource = "emptyDataSetSource"
-    static var delegate = "emptyDataSetDelegate"
-    static var emptyDataSetView = "emptyDataSetView"
-    static var didSwizzle = "didSwizzle"
-}
-
-class WeakReference: NSObject {
-    weak var object: AnyObject?
-
-    init(with object: Any?) {
-        super.init()
-        self.object = object as AnyObject?
-    }
-
-    deinit {
-        print("WeakReference -deinit")
-        self.object = nil
-    }
-}

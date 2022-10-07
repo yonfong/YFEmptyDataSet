@@ -29,7 +29,7 @@ public protocol EmptyDataSetDelegate: AnyObject {
     /// Asks the delegate for image view animation permission. Default is false.
     /// Make sure to return a valid CAAnimation object from imageAnimationForEmptyDataSet:
     ///
-    /// - Parameter scrollView: A scrollView subclass object informing the delegate.
+    /// - Parameter containerView: A UIView subclass object informing the delegate.
     /// - Returns: true if the empty dataset is allowed to animate
     func emptyDataSetShouldAnimateImageView(_ containerView: UIView) -> Bool
 
@@ -41,22 +41,22 @@ public protocol EmptyDataSetDelegate: AnyObject {
     
     /// Tells the delegate that the empty data set will appear.
     ///
-    /// - Parameter scrollView: A scrollView subclass informing the delegate.
+    /// - Parameter containerView: A UIView subclass informing the delegate.
     func emptyDataSetWillAppear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set did appear.
     ///
-    /// - Parameter scrollView: A scrollView subclass informing the delegate.
+    /// - Parameter containerView: A UIView subclass informing the delegate.
     func emptyDataSetDidAppear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set will disappear.
     ///
-    /// - Parameter scrollView: A scrollView subclass informing the delegate.
+    /// - Parameter containerView: A  UIView informing the delegate.
     func emptyDataSetWillDisappear(_ containerView: UIView)
 
     /// Tells the delegate that the empty data set did disappear.
     ///
-    /// - Parameter scrollView: A scrollView subclass informing the delegate.
+    /// - Parameter containerView: A UIView subclass informing the delegate.
     func emptyDataSetDidDisappear(_ containerView: UIView)
 }
 

@@ -23,10 +23,7 @@ public protocol EmptyDataSetSource: AnyObject {
     /// Default is nil.
     func imageTintColor(forEmptyDataSet containerView: UIView) -> UIColor?
     
-    /// Asks the data source for the image animation of the dataset.
-    ///
-    /// - Parameter scrollView: A scrollView subclass object informing the delegate.
-    /// - Returns: image animation
+    /// Default is nil.
     func imageAnimation(forEmptyDataSet containerView: UIView) -> CAAnimation?
 
     /// Default is nil.
@@ -49,7 +46,7 @@ public protocol EmptyDataSetSource: AnyObject {
     
     /// Asks the data source for a offset for vertical alignment of the content. Default is 0.
     ///
-    /// - Parameter scrollView: A scrollView subclass object informing the delegate.
+    /// - Parameter containerView: A UIView subclass object informing the delegate.
     /// - Returns: The offset for vertical alignment.
     func verticalOffset(forEmptyDataSet containerView: UIView) -> CGFloat
     

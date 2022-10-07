@@ -104,6 +104,14 @@ internal extension UIView  {
         associatedEmptyDataSetView?.didDisappearHandle?()
     }
 
+    func isDataEmpty() -> Bool {
+        if let proxy = self as? EmptyDataSetProtocol {
+            return proxy.isDataEmpty
+        } else {
+            return true
+        }
+    }
+    
     // MARK: - Layout
     func layoutEmptyDataSetIfNeeded() {        
         guard (emptyDataSetSource != nil || configureEmptyViewClousre != nil) else {
@@ -222,14 +230,6 @@ internal extension UIView  {
         }
         
         return true
-    }
-    
-    func isDataEmpty() -> Bool {
-        if let proxy = self as? EmptyDataSetProtocol {
-            return proxy.isDataEmpty
-        } else {
-            return true
-        }
     }
 }
 

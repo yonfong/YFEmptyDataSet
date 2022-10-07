@@ -22,13 +22,13 @@ public class EmptyDataSetView: UIView {
     var verticalSpacing: [EmptyDataSetElement: CGFloat]?
     var verticalOffset: CGFloat = 0
     
-    internal var didTapEmptyViewHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
-    internal var didTapEmptyButtonHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
+    var didTapEmptyViewHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
+    var didTapEmptyButtonHandle: ((_ emptyDataSetView: EmptyDataSetView) -> Void)?
     
-    internal var willAppearHandle: (() -> Void)?
-    internal var didAppearHandle: (() -> Void)?
-    internal var willDisappearHandle: (() -> Void)?
-    internal var didDisappearHandle: (() -> Void)?
+    var willAppearHandle: (() -> Void)?
+    var didAppearHandle: (() -> Void)?
+    var willDisappearHandle: (() -> Void)?
+    var didDisappearHandle: (() -> Void)?
     
     lazy var tapGesture: UITapGestureRecognizer = {
         let tap = UITapGestureRecognizer(target: self, action: #selector(emptyViewTaped))
@@ -77,17 +77,16 @@ public class EmptyDataSetView: UIView {
     }()
 
     // MARK: - Private
-
-    fileprivate var canShowImage: Bool {
+    private var canShowImage: Bool {
         return imageView.image != nil
     }
 
-    fileprivate var canShowTitle: Bool {
+    private var canShowTitle: Bool {
         guard let attributedString = titleLabel.attributedText else { return false }
         return !attributedString.string.isEmpty
     }
 
-    fileprivate var canShowDescription: Bool {
+    private var canShowDescription: Bool {
         guard let attributedString = descriptionLabel.attributedText else { return false }
         return !attributedString.string.isEmpty
     }
@@ -102,7 +101,7 @@ public class EmptyDataSetView: UIView {
         return false
     }
     
-    internal var customView: UIView? {
+    var customView: UIView? {
         willSet {
             if let customView = customView {
                 customView.removeFromSuperview()
@@ -116,7 +115,6 @@ public class EmptyDataSetView: UIView {
     }
 
     // MARK: - Initialization
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -224,8 +222,7 @@ public class EmptyDataSetView: UIView {
         contentView.subviews.forEach({$0.removeFromSuperview()})
     }
 
-    // MARK: - Gesture Handling
-
+    // MARK: - Action Handling
     @objc fileprivate func emptyViewTaped() {
         didTapEmptyViewHandle?(self)
     }

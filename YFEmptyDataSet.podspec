@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'YFEmptyDataSet'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'A drop-in UIView extension for showing empty datasets whenever the view has no content to display'
 
 # This description is used to generate tags and improve search results.

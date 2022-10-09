@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 public enum EmptyDataSetElement: CaseIterable {
     case image, title, description, button
@@ -39,6 +38,7 @@ public class EmptyDataSetView: UIView {
     lazy var contentView: UIView = {
         let view = UIView()
         view.alpha = 0
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -158,22 +158,19 @@ public class EmptyDataSetView: UIView {
     func setupLayout() {
         prepareForReuse()
 
-        contentView.snp.remakeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(verticalOffset)
-            make.leading.greaterThanOrEqualTo(0)
-        }
+        contentView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        contentView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: verticalOffset).isActive = true
+        contentView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: 0).isActive = true
         
         if let customView = customView {
             if customView.superview != contentView {
                 customView.removeFromSuperview()
                 contentView.addSubview(customView)
             }
-            customView.snp.remakeConstraints { make in
-                make.center.equalToSuperview()
-                make.leading.greaterThanOrEqualTo(0)
-                make.top.greaterThanOrEqualTo(0)
-            }
+
+            customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+            customView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            customView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 0).isActive = true
         } else {
             var views = [UIView]()
             if canShowImage { views.append(imageView) }
@@ -189,6 +186,7 @@ public class EmptyDataSetView: UIView {
             stackView.distribution = .fill
             stackView.alignment = .center
             stackView.spacing = EmptyDataSetDefaultSpacing
+            stackView.translatesAutoresizingMaskIntoConstraints = false
 
             if let spacing = verticalSpacing {
                 if let space = spacing[.image] { stackView.setCustomSpacing(space, after: imageView) }
@@ -199,17 +197,18 @@ public class EmptyDataSetView: UIView {
 
             contentView.addSubview(stackView)
             
-            stackView.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-                make.leading.greaterThanOrEqualTo(0)
-                make.top.greaterThanOrEqualTo(0)
-            }
+            stackView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+            stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: 0).isActive = true
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: 0).isActive = true
         }
     }
 
     func prepareForReuse() {
         guard contentView.subviews.count > 0 else { return }
-
+        
+        contentView.removeConstraints(contentView.constraints)
+        
         titleLabel.text = nil
         titleLabel.frame = .zero
 

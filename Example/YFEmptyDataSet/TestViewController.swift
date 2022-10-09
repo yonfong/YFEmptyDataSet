@@ -8,7 +8,6 @@
 
 import UIKit
 import YFEmptyDataSet
-import SnapKit
 
 class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDelegate {
 
@@ -21,14 +20,14 @@ class TestViewController: UIViewController, EmptyDataSetSource, EmptyDataSetDele
         let navBarButtom = UIBarButtonItem(title: "Reload", style: .plain, target: self, action: #selector(reload))
         self.navigationItem.rightBarButtonItem = navBarButtom
         
-        
-        view.addSubview(testView)
+        testView.translatesAutoresizingMaskIntoConstraints = false
         testView.backgroundColor = .red
+        view.addSubview(testView)
         
-        
-        testView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        testView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        testView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        testView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        testView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
         testView.emptyDataSetSource = self
         testView.emptyDataSetDelegate = self

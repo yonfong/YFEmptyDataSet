@@ -33,7 +33,5 @@ Pod::Spec.new do |s|
   s.swift_version         = '5.0'
 
   s.source_files = 'YFEmptyDataSet/Classes/**/*'
-  
-  s.dependency 'SnapKit', '~> 5.6.0'
- 
+
 end

@@ -161,7 +161,7 @@ extension UIView: EmptyDataSetInterface {
 
     public var isEmptyDataSetVisible: Bool {
         if let emptyView = associatedEmptyDataSetView {
-            return emptyView.isHidden
+            return !emptyView.isHidden
         }
 
         return false
